@@ -1,4 +1,4 @@
-Attempts at making fzf completion (through [fifc](https://github.com/gazorby/fifc) open in a popup).
+Attempts at making fzf completion menu (through [fifc](https://github.com/gazorby/fifc)) open in a popup.
 
 `popup.fish` opens a new kitty window while saving the current commandline in a variable.
 
