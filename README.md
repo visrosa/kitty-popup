@@ -5,3 +5,5 @@ Attempts at making fzf completion (through [fifc](https://github.com/gazorby/fif
 `fif.fish` only exists because `kitten launch` requires an executable.
 
 `_fifc` is the completion function that I modified to work without an interactive shell (not sure why it's considered non-interactive) and to send the results to a socket which the original window has to be listening to.
+
+There's a WIP approach using a kitten in the other branch.
