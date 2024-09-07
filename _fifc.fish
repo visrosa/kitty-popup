@@ -9,9 +9,10 @@ function _fifc
 	if status --is-interactive
 		    set -gx fifc_token (commandline --current-token)
 	else
-		set -gx fifc_token $cmd[-1] #FIXME: placeholder, need to actually get the token
+		set -gx fifc_token $cmd[-1]
 	end
     set -gx fifc_query "$fifc_token"
+	#	echo -n \n\n\nhey fifc_token $fifc_token
 
     # Get commandline buffer
     if test "$argv" = ""; and status --is-interactive
@@ -31,10 +32,8 @@ function _fifc
 
     set fifc_fzf_query (string trim --chars '\'' -- "$fifc_fzf_query")
 
-	# Height is unnecessary for popups, should be controlled by the DE
     set -l fzf_cmd "
-		fzf \
-            -d \t \
+		fzf-tmux -p \
             --exact \
             --tiebreak=length \
             --select-1 \
@@ -70,11 +69,10 @@ function _fifc
         end
     end
 
-    # Add space trailing space only if
+    # Add space trailing space only if:
     # - there is no trailing space already present
     # - Result is not a directory
     # We need to unescape $result for directory test as we escaped it before
-	# 
     if test (count $result) -eq 1; and not test -d (string unescape -- $result[1])
 			if status --is-interactive
 				set -l buffer (string split -- "$fifc_commandline" (commandline -b))
@@ -92,12 +90,18 @@ function _fifc
 		if status --is-interactive
 			commandline --replace --current-token -- (string join -- ' ' $result)
 		else
-			kitten @ send-text --to unix:/tmp/output (string join -- ' ' $result)
+			set -l trimresult (string replace -ar '[^[:graph:]]' '' "$result")
+			#			echo (string replace -ar '\r' '' $trimresult)
+			echo $trimresult
+			#			kitten @ send-text --to unix:/tmp/output (string join -- ' ' $result)
 		end
 	end
 
 	if status --is-interactive	
 		commandline --function repaint
+		#	else
+		#		echo $result
+		#		kitten @ send-text --to unix:/tmp/output (string join -- ' ' $result)
 	end
 		
 
